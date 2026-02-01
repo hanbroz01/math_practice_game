@@ -1,11 +1,24 @@
+"""
+# ----------------------------
+# 🧮 Math Practice Game
+# ----------------------------
+
+- Players practice Addition, Subtraction, and Multiplication.
+- Generates random math questions with input validation.
+- Tracks scores and maintains a high score across sessions.
+- Provides immediate feedback and multiple questions per round.
+
+Demonstrates basic Python programming: loops, conditionals, 
+functions, user input handling, file reading/writing, and randomization.
+"""
+
 import random
 
 # Settings (change these in the code)
-MAX_NUMBER_ADD = 20
-MAX_NUMBER_SUB = 15        # Maximum number for problems
-MAX_NUMBER_MUL = 10
-
-NUM_QUESTIONS = 10      # How many questions per session
+MAX_NUMBER_ADD = 20       # Maximum number for addition problems
+MAX_NUMBER_SUB = 15       # Maximum number for subtraction problems
+MAX_NUMBER_MUL = 10       # Maximum number for multiplication problems
+NUM_QUESTIONS = 10        # Number of questions per game session
 
 
 # Welcome message
@@ -13,18 +26,22 @@ print("\nWelcome to the Math Practice Program!\n")
 print("You can practice Addition (+), Subtraction (-), or Multiplication (x)\n")
 
 
-
 try: 
+    # Try to open the scores file to read previous high scores
     with open("scores.txt", "r") as f:
-        scores = f.readlines()
-        if scores: #check file is not empty
-            high_score = max(int(line.split()[0]) for line in scores) #extract score
+        scores = f.readlines()  # read all lines into a list
+        if scores:  # check if the file is not empty
+            # Extract the numerical score from each line and find the maximum
+            high_score = max(int(line.split()[0]) for line in scores)
             print(f"Previous high score: {high_score}/{NUM_QUESTIONS}\n")
         else:
+            # File exists but empty, start with 0
             high_score = 0
 except FileNotFoundError:
-        high_score = 0
-        print("No previous score has been recorded. Let'S start fresh!\n")
+    # If the file doesn't exist yet, start with 0
+    high_score = 0
+    print("No previous score has been recorded. Let's start fresh!\n")
+
 
 
 while True:
@@ -40,7 +57,6 @@ while True:
         else:
             print("Invalid choice. Please enter either 1, 2, or 3 to begin.\n")
 
-
     score = 0
 
     for i in range(NUM_QUESTIONS):
@@ -55,7 +71,6 @@ while True:
 
         num1 = random.randint(1, max_num)
         num2 = random.randint(1, max_num)
-
 
 # Handle subtraction to avoid negative answers
         if operation == "2":
@@ -76,7 +91,6 @@ while True:
                 break
             except ValueError:
                 print("Please enter numbers only. Letters are not excepted.")
-
 
         # Check answer
         if user_answer == correct_answer:
@@ -101,9 +115,10 @@ while True:
     else:
         print(f"Current High Score: {high_score}/{NUM_QUESTIONS}!\n")
 
-    with open("scores.txt", "w") as f:  #overwrite file with latest high score
+    # Update the scores file with the new high score
+    # 'w' mode overwrites the file with the latest high score
+    with open("scores.txt", "w") as f:  
         f.write(f"{high_score} out of {NUM_QUESTIONS}\n")              
-
 
     while True:
         user_input = input("Do you want to keep practising?\n"
